@@ -10,7 +10,7 @@ import retrofit2.http.GET
  */
 interface HabrRssApi {
 
-    @GET("best/daily56")
+    @GET("best/daily")
     suspend fun getBestDaily(): Response<RssFeed>
 
     @GET("best/weekly")

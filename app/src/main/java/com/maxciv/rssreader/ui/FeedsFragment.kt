@@ -25,11 +25,12 @@ class FeedsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feeds, container, false)
+        binding.lifecycleOwner = this
 
         binding.viewPager.adapter = FeedsPagerAdapter(this, viewModel)
 
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-            tab.text = "Tab ${viewModel.items[position]}"
+            tab.text = getString(viewModel.feedTypes[position].feedTitleResId)
         }.attach()
 
         return binding.root

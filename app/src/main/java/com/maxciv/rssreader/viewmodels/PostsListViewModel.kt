@@ -1,47 +1,50 @@
 package com.maxciv.rssreader.viewmodels
 
 import android.os.Bundle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.maxciv.rssreader.model.FeedType
+import com.maxciv.rssreader.model.HabrPost
 import com.maxciv.rssreader.network.ApiFactory
 import com.maxciv.rssreader.repository.HabrRssRepository
 import com.maxciv.rssreader.util.Result
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 /**
  * @author maxim.oleynik
  * @since 06.03.2020
  */
-private val KEY_CLICK_COUNT = "${PostsListViewModel::class.java}.KEY_CLICK_COUNT"
+private val KEY_POSTS = "${PostsListViewModel::class.java}.KEY_POSTS"
 
 class PostsListViewModel : ViewModel() {
 
     private val viewModelJob: CompletableJob = SupervisorJob()
     private val viewModelScope: CoroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-    private val repository : HabrRssRepository = HabrRssRepository(ApiFactory.getHabrRssApi())
+    private val repository: HabrRssRepository = HabrRssRepository(ApiFactory.getHabrRssApi())
 
-    var clickCount: Int = 0
+    private val _posts = MutableLiveData<List<HabrPost>>()
+    val posts: LiveData<List<HabrPost>> = _posts
 
-    fun loadRss() {
+    fun loadHabrPosts(feedType: FeedType) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (val bestDaily = repository.getBestDaily()) {
+            when (val habrPosts = feedType.getHabrPosts(repository)) {
                 is Result.Success -> {
-                    bestDaily.data
+                    _posts.postValue(habrPosts.data)
                 }
                 is Result.Error -> {
+                    _posts.postValue(listOf())
                 }
             }
-            Timber.e("")
-
         }
     }
 
     fun saveStateToBundle(outState: Bundle) {
-        outState.putInt(KEY_CLICK_COUNT, clickCount)
+        outState.putParcelableArrayList(KEY_POSTS, ArrayList(posts.value ?: listOf()))
     }
 
     fun restoreStateFromBundle(savedInstanceState: Bundle) {
-        clickCount = savedInstanceState.getInt(KEY_CLICK_COUNT)
+        _posts.value = savedInstanceState.getParcelableArrayList(KEY_POSTS) ?: listOf()
     }
 
     override fun onCleared() {

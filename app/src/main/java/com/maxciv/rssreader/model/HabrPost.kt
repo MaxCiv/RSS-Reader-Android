@@ -1,9 +1,13 @@
 package com.maxciv.rssreader.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * @author maxim.oleynik
  * @since 07.03.2020
  */
+@Parcelize
 data class HabrPost(
         var channel: HabrChannel,
         var guid: String = "",
@@ -13,4 +17,4 @@ data class HabrPost(
         var pubDate: String = "",
         var creator: String = "",
         var categories: MutableList<String> = mutableListOf()
-)
+) : Parcelable

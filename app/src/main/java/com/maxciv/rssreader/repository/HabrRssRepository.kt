@@ -17,4 +17,10 @@ class HabrRssRepository(private val api: HabrRssApi) : BaseRepository() {
             api.getBestDaily()
         }
     }
+
+    suspend fun getBestWeekly(): Result<List<HabrPost>> {
+        return safeApiCall(converter = {it.convertToHabrPosts()}) {
+            api.getBestWeekly()
+        }
+    }
 }

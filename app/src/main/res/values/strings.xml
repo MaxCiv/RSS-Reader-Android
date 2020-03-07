@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RSS Reader</string>
+    <string name="feed_type_best_daily">Best daily</string>
+    <string name="feed_type_best_weekly">Best weekly</string>
 </resources>

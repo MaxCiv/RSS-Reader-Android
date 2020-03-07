@@ -15,10 +15,10 @@ class FeedsPagerAdapter(
 ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int {
-        return viewModel.items.count()
+        return viewModel.feedTypes.count()
     }
 
     override fun createFragment(position: Int): Fragment {
-        return PostsListFragment.create("Fragment ${viewModel.items[position]}")
+        return PostsListFragment.create(viewModel.feedTypes[position])
     }
 }

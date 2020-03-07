@@ -1,6 +1,7 @@
 package com.maxciv.rssreader.viewmodels
 
 import androidx.lifecycle.ViewModel
+import com.maxciv.rssreader.model.FeedType
 
 /**
  * @author maxim.oleynik
@@ -8,5 +9,5 @@ import androidx.lifecycle.ViewModel
  */
 class FeedsViewModel : ViewModel() {
 
-    val items: List<Int> = (1..5).toList()
+    val feedTypes: List<FeedType> = FeedType.values().toList()
 }

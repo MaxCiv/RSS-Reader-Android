@@ -1,5 +1,6 @@
 package com.maxciv.rssreader.adapters
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -52,6 +53,9 @@ class PostsListAdapter : ListAdapter<PostsListDataItem, RecyclerView.ViewHolder>
 
         fun bind(habrPost: HabrPost) {
             binding.titleTextView.text = habrPost.title
+            binding.creatorTextView.text = habrPost.creator
+            binding.dateTextView.text = DateUtils.getRelativeTimeSpanString(habrPost.getPubDateMillis(), System.currentTimeMillis(), 0)
+
             binding.executePendingBindings()
         }
 

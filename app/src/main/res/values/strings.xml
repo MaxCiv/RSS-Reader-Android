@@ -1,5 +1,13 @@
 <resources>
-    <string name="app_name">RSS Reader</string>
+    <string name="app_name" translatable="false">RSS Reader</string>
+
     <string name="feed_type_best_daily">Best daily</string>
     <string name="feed_type_best_weekly">Best weekly</string>
+    <string name="feed_type_best_monthly">Best monthly</string>
+    <string name="feed_type_best_yearly">Best yearly</string>
+    <string name="feed_type_all">All</string>
+    <string name="feed_type_all_top_10">All ≥10</string>
+    <string name="feed_type_all_top_25">All ≥25</string>
+    <string name="feed_type_all_top_50">All ≥50</string>
+    <string name="feed_type_all_top_100">All ≥100</string>
 </resources>

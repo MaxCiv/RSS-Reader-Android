@@ -48,9 +48,14 @@ class PostsListFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.loadHabrPosts(feedType)
+        }
+
         viewModel.posts.observe(viewLifecycleOwner, Observer {
             it?.let { habrPosts ->
                 submitPostsToAdapter(habrPosts)
+                binding.swipeRefreshLayout.isRefreshing = false
             }
         })
 
@@ -70,7 +75,7 @@ class PostsListFragment : Fragment() {
             return
         }
 
-        val sortedPosts = posts.sortedByDescending { it.pubDate }
+        val sortedPosts = posts.sortedByDescending { it.getPubDateMillis() }
 
         val wrappedPosts: MutableList<PostsListDataItem> = sortedPosts
                 .map { PostsListDataItem.PostItem(it) }

@@ -31,7 +31,7 @@ fun RssFeed.convertToHabrPosts(): List<HabrPost> {
                 rssItem.title,
                 rssItem.description,
                 rssItem.link,
-                parseHabrDate(rssItem.pubDate),
+                rssItem.pubDate,
                 rssItem.creator,
                 rssItem.categories
         )

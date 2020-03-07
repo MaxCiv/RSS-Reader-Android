@@ -23,4 +23,46 @@ class HabrRssRepository(private val api: HabrRssApi) : BaseRepository() {
             api.getBestWeekly()
         }
     }
+
+    suspend fun getBestMonthly(): Result<List<HabrPost>> {
+        return safeApiCall(converter = {it.convertToHabrPosts()}) {
+            api.getBestMonthly()
+        }
+    }
+
+    suspend fun getBestYearly(): Result<List<HabrPost>> {
+        return safeApiCall(converter = {it.convertToHabrPosts()}) {
+            api.getBestYearly()
+        }
+    }
+
+    suspend fun getAll(): Result<List<HabrPost>> {
+        return safeApiCall(converter = {it.convertToHabrPosts()}) {
+            api.getAll()
+        }
+    }
+
+    suspend fun getAllTop10(): Result<List<HabrPost>> {
+        return safeApiCall(converter = {it.convertToHabrPosts()}) {
+            api.getAllTop10()
+        }
+    }
+
+    suspend fun getAllTop25(): Result<List<HabrPost>> {
+        return safeApiCall(converter = {it.convertToHabrPosts()}) {
+            api.getAllTop25()
+        }
+    }
+
+    suspend fun getAllTop50(): Result<List<HabrPost>> {
+        return safeApiCall(converter = {it.convertToHabrPosts()}) {
+            api.getAllTop50()
+        }
+    }
+
+    suspend fun getAllTop100(): Result<List<HabrPost>> {
+        return safeApiCall(converter = {it.convertToHabrPosts()}) {
+            api.getAllTop100()
+        }
+    }
 }

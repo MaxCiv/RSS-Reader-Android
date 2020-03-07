@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feed_type_best_daily">Лучшие за сутки</string>
+    <string name="feed_type_best_weekly">Лучшие за неделю</string>
+    <string name="feed_type_best_monthly">Лучшие за месяц</string>
+    <string name="feed_type_best_yearly">Лучшие за год</string>
+    <string name="feed_type_all">Все</string>
+    <string name="feed_type_all_top_10">Все ≥10</string>
+    <string name="feed_type_all_top_25">Все ≥25</string>
+    <string name="feed_type_all_top_50">Все ≥50</string>
+    <string name="feed_type_all_top_100">Все ≥100</string>
+</resources>

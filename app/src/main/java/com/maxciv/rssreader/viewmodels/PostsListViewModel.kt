@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.maxciv.rssreader.Cache
 import com.maxciv.rssreader.model.FeedType
 import com.maxciv.rssreader.model.HabrFeed
+import com.maxciv.rssreader.model.HabrPost
 import com.maxciv.rssreader.network.ApiFactory
 import com.maxciv.rssreader.repository.HabrRssRepository
 import com.maxciv.rssreader.util.Result
@@ -32,6 +33,7 @@ class PostsListViewModel : ViewModel() {
                     _habrFeed.postValue(habrPosts.data)
                 }
                 is Result.Error -> {
+                    Cache.addFeedToCache(feedType, HabrFeed())
                     _habrFeed.postValue(HabrFeed())
                 }
             }
@@ -41,6 +43,19 @@ class PostsListViewModel : ViewModel() {
     fun getHabrFeedFromCache(feedType: FeedType) {
         _habrFeed.value = Cache.getFeedFromCache(feedType)
     }
+
+    //region navigateToDetailedPostEvent
+    private val _navigateToDetailedPostEvent = MutableLiveData<HabrPost>()
+    val navigateToDetailedPostEvent: LiveData<HabrPost> = _navigateToDetailedPostEvent
+
+    fun navigateToDetailedPost(habrPost: HabrPost) {
+        _navigateToDetailedPostEvent.value = habrPost
+    }
+
+    fun onNavigateToDetailedPostEnded() {
+        _navigateToDetailedPostEvent.value = null
+    }
+    //endregion
 
     override fun onCleared() {
         super.onCleared()

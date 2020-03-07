@@ -1,10 +1,13 @@
 <resources>
 
-    <style name="Theme.RssReader" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.RssReader" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorSecondary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
     </style>
 
+    <style name="ThemeOverlay.RssReader.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="ThemeOverlay.RssReader.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 </resources>

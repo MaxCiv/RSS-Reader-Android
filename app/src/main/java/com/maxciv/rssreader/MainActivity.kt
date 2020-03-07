@@ -1,12 +1,15 @@
 package com.maxciv.rssreader
 
+import android.animation.LayoutTransition
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,6 +18,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
+
+        toolbar.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        toolbar.layoutTransition.setDuration(200L)
 
         appBarConfiguration = AppBarConfiguration.Builder(R.id.feeds_fragment).build()
 

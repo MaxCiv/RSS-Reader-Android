@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.maxciv.rssreader.R
 import com.maxciv.rssreader.adapters.PostsListAdapter
@@ -28,7 +29,7 @@ class PostsListFragment : Fragment() {
 
     private val feedType: FeedType by lazy { requireArguments().getSerializable(KEY_FEED_TYPE) as FeedType }
 
-    private val adapter = PostsListAdapter()
+    private val adapter: PostsListAdapter by lazy { PostsListAdapter(viewModel) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,12 +56,19 @@ class PostsListFragment : Fragment() {
             }
         })
 
+        viewModel.navigateToDetailedPostEvent.observe(viewLifecycleOwner, Observer {
+            it?.let { habrPost ->
+                this.findNavController().navigate(FeedsFragmentDirections.toDetailedPost(habrPost))
+                viewModel.onNavigateToDetailedPostEnded()
+            }
+        })
+
         viewModel.loadHabrFeed(feedType)
 
         return binding.root
     }
 
-    private fun submitPostsToAdapter(habrFeed: HabrFeed? = viewModel.habrFeed.value) {
+    private fun submitPostsToAdapter(habrFeed: HabrFeed?) {
         if (habrFeed == null) {
             adapter.submitList(listOf())
             return
@@ -72,7 +80,9 @@ class PostsListFragment : Fragment() {
                 .map { PostsListDataItem.PostItem(it) }
                 .toMutableList()
 
-        wrappedPosts.add(PostsListDataItem.ChannelItem(habrFeed.channel))
+        if (habrFeed.channel.title.isNotEmpty()) {
+            wrappedPosts.add(PostsListDataItem.ChannelItem(habrFeed.channel))
+        }
 
         adapter.submitList(wrappedPosts)
     }

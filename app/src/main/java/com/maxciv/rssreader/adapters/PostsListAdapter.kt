@@ -10,6 +10,7 @@ import com.maxciv.rssreader.databinding.ListItemChannelBinding
 import com.maxciv.rssreader.databinding.ListItemPostBinding
 import com.maxciv.rssreader.model.HabrChannel
 import com.maxciv.rssreader.model.HabrPost
+import com.maxciv.rssreader.viewmodels.PostsListViewModel
 
 /**
  * @author maxim.oleynik
@@ -18,7 +19,7 @@ import com.maxciv.rssreader.model.HabrPost
 const val LIST_ITEM_TYPE_POST = 0
 const val LIST_ITEM_TYPE_CHANNEL = 1
 
-class PostsListAdapter : ListAdapter<PostsListDataItem, RecyclerView.ViewHolder>(PostsListDataItemDiffCallback()) {
+class PostsListAdapter(val viewModel: PostsListViewModel) : ListAdapter<PostsListDataItem, RecyclerView.ViewHolder>(PostsListDataItemDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is PostsListDataItem.PostItem -> LIST_ITEM_TYPE_POST
@@ -27,7 +28,7 @@ class PostsListAdapter : ListAdapter<PostsListDataItem, RecyclerView.ViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            LIST_ITEM_TYPE_POST -> PostViewHolder.from(parent)
+            LIST_ITEM_TYPE_POST -> PostViewHolder.from(parent, viewModel)
             LIST_ITEM_TYPE_CHANNEL -> ChannelViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
@@ -48,7 +49,8 @@ class PostsListAdapter : ListAdapter<PostsListDataItem, RecyclerView.ViewHolder>
 
 
     class PostViewHolder private constructor(
-            private val binding: ListItemPostBinding
+            private val binding: ListItemPostBinding,
+            private val viewModel: PostsListViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(habrPost: HabrPost) {
@@ -56,14 +58,18 @@ class PostsListAdapter : ListAdapter<PostsListDataItem, RecyclerView.ViewHolder>
             binding.creatorTextView.text = habrPost.creator
             binding.dateTextView.text = DateUtils.getRelativeTimeSpanString(habrPost.getPubDateMillis(), System.currentTimeMillis(), 0)
 
+            binding.clickableLayout.setOnClickListener {
+                viewModel.navigateToDetailedPost(habrPost)
+            }
+
             binding.executePendingBindings()
         }
 
         companion object {
-            fun from(parent: ViewGroup): PostViewHolder {
+            fun from(parent: ViewGroup, viewModel: PostsListViewModel): PostViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemPostBinding.inflate(layoutInflater, parent, false)
-                return PostViewHolder(binding)
+                return PostViewHolder(binding, viewModel)
             }
         }
     }

@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
     app:startDestination="@id/feeds_fragment">
 
     <fragment
         android:id="@+id/feeds_fragment"
-        android:name="com.maxciv.rssreader.ui.FeedsFragment" />
+        android:name="com.maxciv.rssreader.ui.FeedsFragment"
+        android:label="@string/fragment_label_feeds"
+        tools:layout="@layout/fragment_feeds">
+        <action
+            android:id="@+id/to_detailed_post"
+            app:destination="@id/detailed_post_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailed_post_fragment"
+        android:name="com.maxciv.rssreader.ui.DetailedPostFragment"
+        android:label="@string/fragment_label_detailed_post"
+        tools:layout="@layout/fragment_detailed_post">
+        <argument
+            android:name="habrPost"
+            app:argType="com.maxciv.rssreader.model.HabrPost" />
+    </fragment>
 </navigation>

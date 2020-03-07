@@ -14,9 +14,8 @@ import com.maxciv.rssreader.adapters.PostsListAdapter
 import com.maxciv.rssreader.adapters.PostsListDataItem
 import com.maxciv.rssreader.databinding.FragmentPostsListBinding
 import com.maxciv.rssreader.model.FeedType
-import com.maxciv.rssreader.model.HabrPost
+import com.maxciv.rssreader.model.HabrFeed
 import com.maxciv.rssreader.viewmodels.PostsListViewModel
-import timber.log.Timber
 
 /**
  * @author maxim.oleynik
@@ -25,7 +24,6 @@ import timber.log.Timber
 class PostsListFragment : Fragment() {
 
     private lateinit var binding: FragmentPostsListBinding
-
     private val viewModel: PostsListViewModel by viewModels()
 
     private val feedType: FeedType by lazy { requireArguments().getSerializable(KEY_FEED_TYPE) as FeedType }
@@ -34,9 +32,7 @@ class PostsListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState != null) {
-            viewModel.restoreStateFromBundle(savedInstanceState)
-        }
+        viewModel.getHabrFeedFromCache(feedType)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,41 +45,34 @@ class PostsListFragment : Fragment() {
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.loadHabrPosts(feedType)
+            viewModel.loadHabrFeed(feedType)
         }
 
-        viewModel.posts.observe(viewLifecycleOwner, Observer {
+        viewModel.habrFeed.observe(viewLifecycleOwner, Observer {
             it?.let { habrPosts ->
                 submitPostsToAdapter(habrPosts)
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         })
 
-        viewModel.loadHabrPosts(feedType)
+        viewModel.loadHabrFeed(feedType)
 
         return binding.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        viewModel.saveStateToBundle(outState)
-    }
-
-    private fun submitPostsToAdapter(posts: List<HabrPost>? = viewModel.posts.value) {
-        if (posts == null) {
+    private fun submitPostsToAdapter(habrFeed: HabrFeed? = viewModel.habrFeed.value) {
+        if (habrFeed == null) {
             adapter.submitList(listOf())
             return
         }
 
-        val sortedPosts = posts.sortedByDescending { it.getPubDateMillis() }
+        val sortedPosts = habrFeed.posts.sortedByDescending { it.getPubDateMillis() }
 
         val wrappedPosts: MutableList<PostsListDataItem> = sortedPosts
                 .map { PostsListDataItem.PostItem(it) }
                 .toMutableList()
 
-        if (sortedPosts.isNotEmpty()) {
-            wrappedPosts.add(PostsListDataItem.ChannelItem(sortedPosts[0].channel))
-        }
+        wrappedPosts.add(PostsListDataItem.ChannelItem(habrFeed.channel))
 
         adapter.submitList(wrappedPosts)
     }

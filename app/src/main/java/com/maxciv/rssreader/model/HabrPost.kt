@@ -10,7 +10,6 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class HabrPost(
-        var channel: HabrChannel,
         var guid: String = "",
         var title: String = "",
         var description: String = "",

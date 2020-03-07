@@ -20,7 +20,6 @@ import com.maxciv.rssreader.viewmodels.FeedsViewModel
 class FeedsFragment : Fragment() {
 
     private lateinit var binding: FragmentFeedsBinding
-
     private val viewModel: FeedsViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

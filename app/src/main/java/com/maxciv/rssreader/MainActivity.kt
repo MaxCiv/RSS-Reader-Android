@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        appBarConfiguration = AppBarConfiguration.Builder(R.id.view_pager_fragment).build()
+        appBarConfiguration = AppBarConfiguration.Builder(R.id.feeds_fragment).build()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController

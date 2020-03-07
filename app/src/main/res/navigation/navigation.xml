@@ -2,9 +2,9 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation"
-    app:startDestination="@id/view_pager_fragment">
+    app:startDestination="@id/feeds_fragment">
 
     <fragment
-        android:id="@+id/view_pager_fragment"
-        android:name="com.maxciv.rssreader.ui.ViewPagerFragment" />
+        android:id="@+id/feeds_fragment"
+        android:name="com.maxciv.rssreader.ui.FeedsFragment" />
 </navigation>

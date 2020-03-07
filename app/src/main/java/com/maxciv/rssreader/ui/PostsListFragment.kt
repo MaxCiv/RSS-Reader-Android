@@ -8,9 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.maxciv.rssreader.R
+import com.maxciv.rssreader.adapters.PostsListAdapter
+import com.maxciv.rssreader.adapters.PostsListDataItem
 import com.maxciv.rssreader.databinding.FragmentPostsListBinding
 import com.maxciv.rssreader.model.FeedType
+import com.maxciv.rssreader.model.HabrPost
 import com.maxciv.rssreader.viewmodels.PostsListViewModel
 import timber.log.Timber
 
@@ -26,6 +30,8 @@ class PostsListFragment : Fragment() {
 
     private val feedType: FeedType by lazy { requireArguments().getSerializable(KEY_FEED_TYPE) as FeedType }
 
+    private val adapter = PostsListAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
@@ -37,9 +43,14 @@ class PostsListFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_posts_list, container, false)
         binding.lifecycleOwner = this
 
+        binding.recyclerView.apply {
+            adapter = this@PostsListFragment.adapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
         viewModel.posts.observe(viewLifecycleOwner, Observer {
             it?.let { habrPosts ->
-                Timber.e(habrPosts.size.toString())
+                submitPostsToAdapter(habrPosts)
             }
         })
 
@@ -51,6 +62,25 @@ class PostsListFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.saveStateToBundle(outState)
+    }
+
+    private fun submitPostsToAdapter(posts: List<HabrPost>? = viewModel.posts.value) {
+        if (posts == null) {
+            adapter.submitList(listOf())
+            return
+        }
+
+        val sortedPosts = posts.sortedByDescending { it.pubDate }
+
+        val wrappedPosts: MutableList<PostsListDataItem> = sortedPosts
+                .map { PostsListDataItem.PostItem(it) }
+                .toMutableList()
+
+        if (sortedPosts.isNotEmpty()) {
+            wrappedPosts.add(PostsListDataItem.ChannelItem(sortedPosts[0].channel))
+        }
+
+        adapter.submitList(wrappedPosts)
     }
 
 

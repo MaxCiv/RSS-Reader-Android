@@ -2,6 +2,7 @@ package com.maxciv.rssreader.model.rss
 
 import com.maxciv.rssreader.model.HabrChannel
 import com.maxciv.rssreader.model.HabrPost
+import com.maxciv.rssreader.util.parseHabrDate
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root
 
@@ -30,7 +31,7 @@ fun RssFeed.convertToHabrPosts(): List<HabrPost> {
                 rssItem.title,
                 rssItem.description,
                 rssItem.link,
-                rssItem.pubDate,
+                parseHabrDate(rssItem.pubDate),
                 rssItem.creator,
                 rssItem.categories
         )

@@ -6,74 +6,67 @@
     <data>
 
         <import type="android.view.View" />
+
+        <variable
+            name="post"
+            type="com.maxciv.rssreader.model.HabrPost" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/root_card"
+    <LinearLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_minimum"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_minimum"
-        app:cardCornerRadius="10dp">
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clickable_layout"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:id="@+id/title_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Title of the Post!" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/author_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.5"
-                android:layout_margin="@dimen/margin_medium"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_text_view"
-                app:srcCompat="@drawable/ic_person_black_24dp" />
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/padding_small">
 
             <TextView
                 android:id="@+id/creator_text_view"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/author_image"
-                app:layout_constraintEnd_toStartOf="@+id/date_text_view"
-                app:layout_constraintStart_toEndOf="@+id/author_image"
-                app:layout_constraintTop_toTopOf="@+id/author_image"
-                tools:text="Creator" />
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="@{post.creator}"
+                android:textColor="@color/colorSecondary"
+                tools:text="Author" />
 
             <TextView
                 android:id="@+id/date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/author_image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/author_image"
-                tools:text="1 hour ago" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_small"
+                app:pubDate="@{post}"
+                tools:text="2 hours ago" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium_large"
+            android:fontFamily="sans-serif-medium"
+            android:text="@{post.title}"
+            android:textSize="20sp"
+            tools:text="AAAAAAAAAAAA!" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.05"
+            android:background="@color/colorPrimary" />
+    </LinearLayout>
 </layout>

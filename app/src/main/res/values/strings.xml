@@ -15,4 +15,5 @@
     <string name="feed_type_all_top_100">All ≥100</string>
 
     <string name="read_more">Read more</string>
+    <string name="open_this_feed_in_the_browser">Open this feed in the browser</string>
 </resources>

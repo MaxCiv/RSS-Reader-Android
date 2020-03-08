@@ -1,5 +1,7 @@
 package com.maxciv.rssreader.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -60,6 +62,15 @@ class PostsListFragment : Fragment() {
             it?.let { habrPost ->
                 this.findNavController().navigate(FeedsFragmentDirections.toDetailedPost(habrPost))
                 viewModel.onNavigateToDetailedPostEnded()
+            }
+        })
+
+        viewModel.navigateToBrowserEvent.observe(viewLifecycleOwner, Observer {
+            it?.let { link ->
+                startActivity(Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(link)
+                })
+                viewModel.onNavigateToBrowserEnded()
             }
         })
 

@@ -18,3 +18,11 @@ fun parseHabrDate(date: String): Long {
         System.currentTimeMillis()
     }
 }
+
+inline fun <reified T : Enum<T>> enumValueOf(name: String, defaultValue: T): T {
+    return try {
+        enumValues<T>().first { it.name == name }
+    } catch (e: NoSuchElementException) {
+        defaultValue
+    }
+}

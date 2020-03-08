@@ -56,6 +56,19 @@ class PostsListViewModel : ViewModel() {
         _navigateToDetailedPostEvent.value = null
     }
     //endregion
+    
+    //region navigateToBrowserEvent
+    private val _navigateToBrowserEvent = MutableLiveData<String>()
+    val navigateToBrowserEvent: LiveData<String> = _navigateToBrowserEvent
+    
+    fun navigateToBrowser(link: String) {
+        _navigateToBrowserEvent.value = link
+    }
+    
+    fun onNavigateToBrowserEnded() {
+        _navigateToBrowserEvent.value = null
+    }
+    //endregion
 
     override fun onCleared() {
         super.onCleared()

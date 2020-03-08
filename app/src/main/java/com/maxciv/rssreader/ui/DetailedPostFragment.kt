@@ -39,7 +39,7 @@ class DetailedPostFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.post = viewModel.habrPost
 
-        //TODO
+        //TODO recycler with images
         val imageUrls = HtmlCompat.fromHtml(viewModel.habrPost.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
                 .getSpans<ImageSpan>()
                 .map { it.source }

@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-        <import type="android.view.View" />
-    </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/root_card"
+        android:id="@+id/read_more_button"
+        style="@style/Widget.RssReader.HabrRoundButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_minimum"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_minimum"
-        app:cardCornerRadius="10dp">
+        android:layout_margin="@dimen/margin_medium">
 
         <TextView
-            android:id="@+id/title_text_view"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="@dimen/margin_medium"
-            android:textSize="25sp"
-            tools:text="Djiwedfih dfhedaj!" />
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/open_this_feed_in_the_browser"
+            android:textColor="@color/colorSecondary"
+            android:textSize="18sp" />
     </com.google.android.material.card.MaterialCardView>
 </layout>

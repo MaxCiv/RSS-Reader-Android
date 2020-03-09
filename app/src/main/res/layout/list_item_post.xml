@@ -59,8 +59,8 @@
             android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium_large"
             android:fontFamily="sans-serif-medium"
-            android:text="@{post.title}"
             android:textSize="20sp"
+            app:postTitle="@{post}"
             tools:text="AAAAAAAAAAAA!" />
 
         <View

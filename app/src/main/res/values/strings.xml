@@ -16,4 +16,7 @@
 
     <string name="read_more">Read more</string>
     <string name="open_this_feed_in_the_browser">Open this feed in the browser</string>
+    <string name="refresh">Refresh</string>
+    <string name="posts_not_found">Posts not found!</string>
+    <string name="failed_to_load_new_posts">Failed to load new posts</string>
 </resources>

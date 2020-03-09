@@ -12,12 +12,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.maxciv.rssreader.Cache
 import com.maxciv.rssreader.R
 import com.maxciv.rssreader.adapters.PostsListAdapter
 import com.maxciv.rssreader.adapters.PostsListDataItem
 import com.maxciv.rssreader.databinding.FragmentPostsListBinding
 import com.maxciv.rssreader.model.FeedType
 import com.maxciv.rssreader.model.HabrFeed
+import com.maxciv.rssreader.util.showToast
 import com.maxciv.rssreader.viewmodels.PostsListViewModel
 
 /**
@@ -35,7 +37,7 @@ class PostsListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getHabrFeedFromCache(feedType)
+        viewModel.setNewHabrFeed(Cache.getFeedFromCache(feedType))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,13 +50,36 @@ class PostsListFragment : Fragment() {
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.loadHabrFeed(feedType)
+            viewModel.loadHabrFeed(feedType, showErrorMessageOnFail = true)
+        }
+
+        binding.refreshButton.setOnClickListener {
+            viewModel.loadHabrFeed(feedType, showErrorMessageOnFail = true)
         }
 
         viewModel.habrFeed.observe(viewLifecycleOwner, Observer {
-            it?.let { habrPosts ->
-                submitPostsToAdapter(habrPosts)
+            it?.let { newHabrFeed ->
+                submitHabrFeedToAdapter(newHabrFeed)
+            }
+        })
+
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading == true) {
+                if (isCurrentFeedEmpty()) {
+                    binding.loadingProgressBar.visibility = View.VISIBLE
+                    binding.swipeRefreshLayout.isEnabled = false
+                }
+            } else {
+                binding.loadingProgressBar.visibility = View.GONE
+                binding.swipeRefreshLayout.isEnabled = true
                 binding.swipeRefreshLayout.isRefreshing = false
+            }
+        })
+
+        viewModel.toastHelper.showToastEvent.observe(viewLifecycleOwner, Observer {
+            it?.let { messageResId ->
+                requireContext().showToast(messageResId)
+                viewModel.toastHelper.onShowEnded()
             }
         })
 
@@ -79,7 +104,12 @@ class PostsListFragment : Fragment() {
         return binding.root
     }
 
-    private fun submitPostsToAdapter(habrFeed: HabrFeed?) {
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadHabrFeed(feedType)
+    }
+
+    private fun submitHabrFeedToAdapter(habrFeed: HabrFeed?) {
         if (habrFeed == null) {
             adapter.submitList(listOf())
             return
@@ -91,11 +121,31 @@ class PostsListFragment : Fragment() {
                 .map { PostsListDataItem.PostItem(it) }
                 .toMutableList()
 
-        if (habrFeed.channel.title.isNotEmpty()) {
+        if (habrFeed.channel.isValid()) {
             wrappedPosts.add(PostsListDataItem.ChannelItem(habrFeed.channel))
         }
 
+        if (wrappedPosts.isEmpty()) {
+            showStubPostsNotFound()
+        } else {
+            hideStubPostsNotFound()
+        }
+
         adapter.submitList(wrappedPosts)
+    }
+
+    private fun isCurrentFeedEmpty(): Boolean {
+        return adapter.currentList.isEmpty()
+    }
+
+    private fun hideStubPostsNotFound() {
+        binding.refreshButton.visibility = View.GONE
+        binding.postsNotFoundTextView.visibility = View.GONE
+    }
+
+    private fun showStubPostsNotFound() {
+        binding.refreshButton.visibility = View.VISIBLE
+        binding.postsNotFoundTextView.visibility = View.VISIBLE
     }
 
 

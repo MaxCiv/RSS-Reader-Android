@@ -10,6 +10,14 @@ import com.maxciv.rssreader.model.HabrPost
  * @author maxim.oleynik
  * @since 07.03.2020
  */
+@BindingAdapter("postTitle")
+fun TextView.setPostTitle(habrPost: HabrPost?) {
+    text = HtmlCompat.fromHtml(
+            habrPost?.title ?: "",
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+    ).toString()
+}
+
 @BindingAdapter("postDescription")
 fun TextView.setPostDescription(habrPost: HabrPost?) {
     text = HtmlCompat.fromHtml(
@@ -21,7 +29,7 @@ fun TextView.setPostDescription(habrPost: HabrPost?) {
             .filter { !it.contains("→") }
             .joinToString(separator = "\n")
             .trim()
-            .replace("""\n{4,}""".toRegex(), "\n\n\n")
+            .replace("""\n{3,}""".toRegex(), "\n\n")
 }
 
 @BindingAdapter("pubDate")

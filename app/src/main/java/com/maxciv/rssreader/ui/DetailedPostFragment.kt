@@ -43,6 +43,7 @@ class DetailedPostFragment : Fragment() {
         val imageUrls = HtmlCompat.fromHtml(viewModel.habrPost.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
                 .getSpans<ImageSpan>()
                 .map { it.source }
+                .firstOrNull()
         Timber.e("IMAGES: $imageUrls")
 
         viewModel.habrPost.categories.forEach { category ->

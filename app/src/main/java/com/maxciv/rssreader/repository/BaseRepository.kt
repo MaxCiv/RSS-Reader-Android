@@ -21,12 +21,12 @@ open class BaseRepository {
                 return Result.Success(converter.invoke(response.body()!!))
             }
 
-            return Result.Error(
+            return Result.Fail(
                     errorMessage,
                     IOException("Error occurred during safe Api call: ${response.errorBody()?.string()}")
             )
         } catch (e: IOException) {
-            return Result.Error(errorMessage, e)
+            return Result.Fail(errorMessage, e)
         }
     }
 }

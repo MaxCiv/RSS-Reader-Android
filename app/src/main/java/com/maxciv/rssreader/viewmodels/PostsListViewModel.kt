@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.maxciv.rssreader.Cache
+import com.maxciv.rssreader.R
 import com.maxciv.rssreader.model.FeedType
 import com.maxciv.rssreader.model.HabrFeed
 import com.maxciv.rssreader.model.HabrPost
 import com.maxciv.rssreader.network.ApiFactory
 import com.maxciv.rssreader.repository.HabrRssRepository
 import com.maxciv.rssreader.util.Result
+import com.maxciv.rssreader.util.ToastHelper
 import kotlinx.coroutines.*
 
 /**
@@ -20,28 +22,60 @@ class PostsListViewModel : ViewModel() {
 
     private val viewModelJob: CompletableJob = SupervisorJob()
     private val viewModelScope: CoroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-    private val repository: HabrRssRepository = HabrRssRepository(ApiFactory.getHabrRssApi())
+    private val repository: HabrRssRepository = HabrRssRepository(ApiFactory.habrRssApi)
 
+    val toastHelper = ToastHelper()
+
+    //region isLoading
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private fun setLoadingStarted() {
+        _isLoading.value = true
+    }
+
+    private fun postLoadingStopped() {
+        _isLoading.postValue(false)
+    }
+    //endregion
+
+    //region habrFeed
     private val _habrFeed = MutableLiveData<HabrFeed>()
     val habrFeed: LiveData<HabrFeed> = _habrFeed
 
-    fun loadHabrFeed(feedType: FeedType) {
-        viewModelScope.launch(Dispatchers.IO) {
-            when (val habrPosts = feedType.getHabrPosts(repository)) {
-                is Result.Success -> {
-                    Cache.addFeedToCache(feedType, habrPosts.data)
-                    _habrFeed.postValue(habrPosts.data)
-                }
-                is Result.Error -> {
-                    Cache.addFeedToCache(feedType, HabrFeed())
-                    _habrFeed.postValue(HabrFeed())
-                }
-            }
-        }
+    fun setNewHabrFeed(habrFeed: HabrFeed?) {
+        _habrFeed.value = habrFeed
     }
 
-    fun getHabrFeedFromCache(feedType: FeedType) {
-        _habrFeed.value = Cache.getFeedFromCache(feedType)
+    private fun postNewHabrFeed(habrFeed: HabrFeed?) {
+        _habrFeed.postValue(habrFeed)
+    }
+
+    private fun postCurrentHabrFeedAgain() {
+        val some = if (_habrFeed.value == null) HabrFeed() else _habrFeed.value
+        _habrFeed.postValue(some)
+    }
+    //endregion
+
+    fun loadHabrFeed(feedType: FeedType, showErrorMessageOnFail: Boolean = false) {
+        if (isLoading.value == true) return
+
+        setLoadingStarted()
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val habrFeed = feedType.getHabrFeed(repository)) {
+                is Result.Success -> {
+                    Cache.addFeedToCache(feedType, habrFeed.data)
+                    postNewHabrFeed(habrFeed.data)
+                }
+                is Result.Fail -> {
+                    if (showErrorMessageOnFail) {
+                        toastHelper.show(R.string.failed_to_load_new_posts)
+                    }
+                    postCurrentHabrFeedAgain()
+                }
+            }
+            postLoadingStopped()
+        }
     }
 
     //region navigateToDetailedPostEvent
@@ -56,15 +90,15 @@ class PostsListViewModel : ViewModel() {
         _navigateToDetailedPostEvent.value = null
     }
     //endregion
-    
+
     //region navigateToBrowserEvent
     private val _navigateToBrowserEvent = MutableLiveData<String>()
     val navigateToBrowserEvent: LiveData<String> = _navigateToBrowserEvent
-    
+
     fun navigateToBrowser(link: String) {
         _navigateToBrowserEvent.value = link
     }
-    
+
     fun onNavigateToBrowserEnded() {
         _navigateToBrowserEvent.value = null
     }

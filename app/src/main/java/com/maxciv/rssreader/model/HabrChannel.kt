@@ -16,4 +16,9 @@ data class HabrChannel(
         var imageTitle: String = "",
         var imageUrl: String = "",
         var imageLink: String = ""
-) : Parcelable
+) : Parcelable {
+
+    fun isValid(): Boolean {
+        return link.isNotBlank()
+    }
+}

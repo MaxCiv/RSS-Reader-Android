@@ -1,5 +1,7 @@
 package com.maxciv.rssreader.util
 
+import android.content.Context
+import android.widget.Toast
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,4 +27,8 @@ inline fun <reified T : Enum<T>> enumValueOf(name: String, defaultValue: T): T {
     } catch (e: NoSuchElementException) {
         defaultValue
     }
+}
+
+fun Context.showToast(resId: Int, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, resId, duration).show()
 }

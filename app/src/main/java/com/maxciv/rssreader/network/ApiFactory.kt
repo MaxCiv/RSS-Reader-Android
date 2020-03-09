@@ -11,14 +11,12 @@ object ApiFactory {
 
     private const val HABR_RSS_BASE_URL = "https://habr.com/ru/rss/"
 
+    val habrRssApi: HabrRssApi = retrofit().create(HabrRssApi::class.java)
+
     private fun retrofit(): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(HABR_RSS_BASE_URL)
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build()
-    }
-
-    fun getHabrRssApi(): HabrRssApi {
-        return retrofit().create(HabrRssApi::class.java)
     }
 }

@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">RSS Reader</string>
+    <string name="app_name" translatable="false">Habr RSS</string>
 
     <string name="fragment_label_feeds">Habr Feed</string>
     <string name="fragment_label_detailed_post">Post</string>

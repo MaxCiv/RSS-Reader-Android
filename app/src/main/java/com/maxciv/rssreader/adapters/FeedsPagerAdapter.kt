@@ -2,8 +2,8 @@ package com.maxciv.rssreader.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.maxciv.rssreader.model.FeedType
 import com.maxciv.rssreader.ui.PostsListFragment
-import com.maxciv.rssreader.viewmodels.FeedsViewModel
 
 /**
  * @author maxim.oleynik
@@ -11,14 +11,14 @@ import com.maxciv.rssreader.viewmodels.FeedsViewModel
  */
 class FeedsPagerAdapter(
         fragment: Fragment,
-        private val viewModel: FeedsViewModel
+        private val feedTypes: List<FeedType>
 ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int {
-        return viewModel.feedTypes.count()
+        return feedTypes.count()
     }
 
     override fun createFragment(position: Int): Fragment {
-        return PostsListFragment.create(viewModel.feedTypes[position])
+        return PostsListFragment.create(feedTypes[position])
     }
 }

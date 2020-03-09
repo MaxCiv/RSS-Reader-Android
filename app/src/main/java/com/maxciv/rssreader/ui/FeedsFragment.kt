@@ -38,7 +38,7 @@ class FeedsFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.viewPager.apply {
-            adapter = FeedsPagerAdapter(this@FeedsFragment, viewModel)
+            adapter = FeedsPagerAdapter(this@FeedsFragment, viewModel.feedTypes)
             setCurrentItem(prefs.currentFeedType.ordinal, false)
             registerOnPageChangeCallback(onPageChangeCallback)
         }

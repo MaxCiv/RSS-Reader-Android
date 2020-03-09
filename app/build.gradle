@@ -48,13 +48,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
 
+    implementation "androidx.core:core-ktx:$version_core"
     implementation "androidx.appcompat:appcompat:$version_appcompat"
     implementation "androidx.fragment:fragment:$version_fragment"
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
     implementation "androidx.viewpager2:viewpager2:$version_viewpager2"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$version_swiperefreshlayout"
-
-    implementation 'androidx.core:core-ktx:1.2.0'
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
@@ -78,6 +77,11 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-simplexml:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
 
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$version_glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$version_glide"
+
+    // Logger
     implementation "com.jakewharton.timber:timber:$version_timber"
 
     //For tests

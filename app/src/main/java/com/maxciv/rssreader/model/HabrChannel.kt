@@ -1,6 +1,7 @@
 package com.maxciv.rssreader.model
 
 import android.os.Parcelable
+import android.webkit.URLUtil
 import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 
@@ -19,6 +20,6 @@ data class HabrChannel(
 ) : Parcelable {
 
     fun isValid(): Boolean {
-        return link.isNotBlank()
+        return URLUtil.isValidUrl(link)
     }
 }

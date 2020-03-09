@@ -3,21 +3,19 @@ package com.maxciv.rssreader.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
-import androidx.core.text.getSpans
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.chip.Chip
 import com.maxciv.rssreader.R
 import com.maxciv.rssreader.databinding.FragmentDetailedPostBinding
 import com.maxciv.rssreader.viewmodels.DetailedPostViewModel
-import timber.log.Timber
 
 /**
  * @author maxim.oleynik
@@ -31,7 +29,7 @@ class DetailedPostFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.habrPost = args.habrPost
+        viewModel.setHabrPostAndParseImageUrl(args.habrPost)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,12 +37,10 @@ class DetailedPostFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.post = viewModel.habrPost
 
-        //TODO recycler with images
-        val imageUrls = HtmlCompat.fromHtml(viewModel.habrPost.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                .getSpans<ImageSpan>()
-                .map { it.source }
-                .firstOrNull()
-        Timber.e("IMAGES: $imageUrls")
+        Glide.with(this)
+                .load(viewModel.imageUrl)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(binding.imageView)
 
         viewModel.habrPost.categories.forEach { category ->
             val chip = inflater.inflate(R.layout.chip_item_category, binding.categoriesChipGroup, false) as Chip

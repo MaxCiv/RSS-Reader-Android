@@ -1,6 +1,7 @@
 package com.maxciv.rssreader.viewmodels
 
 import android.text.style.ImageSpan
+import android.webkit.URLUtil
 import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,6 @@ class DetailedPostViewModel : ViewModel() {
         imageUrl = HtmlCompat.fromHtml(habrPost.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
                 .getSpans<ImageSpan>()
                 .map { it.source }
-                .firstOrNull()
+                .firstOrNull { URLUtil.isValidUrl(it) }
     }
 }

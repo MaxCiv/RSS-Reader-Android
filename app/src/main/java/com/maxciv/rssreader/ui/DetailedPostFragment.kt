@@ -37,10 +37,12 @@ class DetailedPostFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.post = viewModel.habrPost
 
-        Glide.with(this)
-                .load(viewModel.imageUrl)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.imageView)
+        viewModel.imageUrl?.let { imageUrl ->
+            Glide.with(this)
+                    .load(imageUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(binding.imageView)
+        }
 
         viewModel.habrPost.categories.forEach { category ->
             val chip = inflater.inflate(R.layout.chip_item_category, binding.categoriesChipGroup, false) as Chip

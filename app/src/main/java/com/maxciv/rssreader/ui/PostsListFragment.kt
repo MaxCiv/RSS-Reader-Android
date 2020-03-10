@@ -109,12 +109,7 @@ class PostsListFragment : Fragment() {
         viewModel.loadHabrFeed(feedType)
     }
 
-    private fun submitHabrFeedToAdapter(habrFeed: HabrFeed?) {
-        if (habrFeed == null) {
-            adapter.submitList(listOf())
-            return
-        }
-
+    private fun submitHabrFeedToAdapter(habrFeed: HabrFeed) {
         val sortedPosts = habrFeed.posts.sortedByDescending { it.getPubDateMillis() }
 
         val wrappedPosts: MutableList<PostsListDataItem> = sortedPosts

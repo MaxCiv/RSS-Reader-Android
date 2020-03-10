@@ -22,9 +22,11 @@ class PostsListAdapter(
         private val viewModel: PostsListViewModel
 ) : ListAdapter<PostsListDataItem, RecyclerView.ViewHolder>(PostsListDataItemDiffCallback()) {
 
-    override fun getItemViewType(position: Int): Int = when (getItem(position)) {
-        is PostsListDataItem.PostItem -> LIST_ITEM_TYPE_POST
-        is PostsListDataItem.ChannelItem -> LIST_ITEM_TYPE_CHANNEL
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is PostsListDataItem.PostItem -> LIST_ITEM_TYPE_POST
+            is PostsListDataItem.ChannelItem -> LIST_ITEM_TYPE_CHANNEL
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

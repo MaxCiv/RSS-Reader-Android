@@ -14,7 +14,7 @@ class AppPreferences(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
 
     var currentFeedType: FeedType
-        get() = enumValueOf((prefs.getString(KEY_CURRENT_FEED_TYPE, FeedType.BEST_DAILY.name)!!), FeedType.BEST_DAILY)
+        get() = enumValueOf(prefs.getString(KEY_CURRENT_FEED_TYPE, FeedType.BEST_DAILY.name), FeedType.BEST_DAILY)
         set(value) = prefs.edit().putString(KEY_CURRENT_FEED_TYPE, value.name).apply()
 
 

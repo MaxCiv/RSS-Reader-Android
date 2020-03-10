@@ -1,6 +1,5 @@
 package com.maxciv.rssreader.model
 
-import androidx.annotation.Keep
 import com.maxciv.rssreader.R
 import com.maxciv.rssreader.repository.HabrRssRepository
 import com.maxciv.rssreader.util.Result
@@ -9,7 +8,6 @@ import com.maxciv.rssreader.util.Result
  * @author maxim.oleynik
  * @since 07.03.2020
  */
-@Keep
 enum class FeedType(val feedTitleResId: Int) {
 
     BEST_DAILY(R.string.feed_type_best_daily) {

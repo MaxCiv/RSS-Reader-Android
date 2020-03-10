@@ -61,7 +61,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:textSize="26sp"
                 app:postTitle="@{post}"
-                tools:text="AAAAAAAAAAAA!" />
+                tools:text="Post title!" />
 
             <HorizontalScrollView
                 android:id="@+id/chip_scroll_view"
@@ -89,7 +89,7 @@
                 android:layout_marginEnd="@dimen/margin_medium"
                 android:textSize="18sp"
                 app:postDescription="@{post}"
-                tools:text="AAAAAAAAAAAA!" />
+                tools:text="Description!" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_view"

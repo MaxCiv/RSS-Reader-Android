@@ -22,6 +22,12 @@
 
 -keepnames class androidx.navigation.fragment.NavHostFragment
 
+-keep class com.maxciv.rssreader.model.** { *; }
+
+# For Retrofit SimpleXmlConverter
+-keep class org.xmlpull.v1.** { *; }
+-keep class org.simpleframework.xml.**{ *; }
+
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule

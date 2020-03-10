@@ -41,6 +41,7 @@ class FeedsFragment : Fragment() {
             adapter = FeedsPagerAdapter(this@FeedsFragment, viewModel.feedTypes)
             setCurrentItem(prefs.currentFeedType.ordinal, false)
             registerOnPageChangeCallback(onPageChangeCallback)
+            offscreenPageLimit = 1
         }
 
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->

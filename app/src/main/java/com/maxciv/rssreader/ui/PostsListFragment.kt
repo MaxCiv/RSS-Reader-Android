@@ -107,7 +107,6 @@ class PostsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.loadHabrFeed(feedType)
-        binding.recyclerView.smoothScrollBy(0, 1)
     }
 
     private fun submitHabrFeedToAdapter(habrFeed: HabrFeed?) {

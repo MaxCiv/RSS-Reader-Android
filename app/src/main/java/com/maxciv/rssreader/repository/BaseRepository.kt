@@ -23,7 +23,7 @@ open class BaseRepository {
 
             return Result.Fail(
                     errorMessage,
-                    IOException("Error occurred during safe Api call: ${response.errorBody()?.string()}")
+                    IOException("Error (code: ${response.code()}) occurred during safe Api call: ${response.errorBody()?.string()}")
             )
         } catch (e: IOException) {
             return Result.Fail(errorMessage, e)

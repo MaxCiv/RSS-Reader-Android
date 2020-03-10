@@ -16,6 +16,6 @@
     <string name="read_more">Читать дальше</string>
     <string name="open_this_feed_in_the_browser">Открыть эту ленту в браузере</string>
     <string name="refresh">Обновить</string>
-    <string name="posts_not_found">Посты не найдены!</string>
+    <string name="posts_not_found">Посты не найдены!\nПроверьте соединение с сетью.</string>
     <string name="failed_to_load_new_posts">Не удалось загрузить новые посты</string>
 </resources>
